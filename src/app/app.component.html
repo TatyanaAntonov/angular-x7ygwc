@@ -1,0 +1,91 @@
+
+<div class="header">
+	<nav class="navbar navbar-expand-lg navbar-light bg-light">
+		<a class="navbar-brand"
+			href="#"><img src="https://www.kiid.ca/static/dist/img/corporate/explorance.png" style="height: 80px"> Explorence</a>
+			<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+			<div class="collapse navbar-collapse" id="navbarSupportedContent">
+				<ul class="navbar-nav mr-auto">
+				</ul>
+				<form class="form-inline my-2 my-lg-0">
+					<input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+					<button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+				</form>
+			</div>
+	</nav>
+</div>
+<div class="container">
+	<br />
+	<div class="row ">
+		<div class="col-4">
+			<h5>Read/Show</h5>
+		</div>
+		<div class="col-4">
+			<label>Search:</label>
+			<input type="text" />
+    </div>
+			<table class="table">
+				<tbody>
+					<tr>
+						<th></th>
+						<th>Name</th>
+						<th>Family</th>
+						<th>Date of Birth</th>
+						<th>Actions</th>
+					</tr>
+					<tr *ngFor="let user of users; let i = index">
+						<td>{{i+1}}</td>
+						<td>{{user.name}}</td>
+						<td>{{user.family}}</td>
+						<td>{{dateOfBirth| date : 'dd-MM-yyyy' }}</td>
+						<td>
+							<button class="btn btn-outline-danger" (click)="delete(i)" value="Delete">Delete</button>
+							<button class="btn btn-outline-dark" (click)="open(content)" value="Add">Add</button>
+							<button class="btn btn-outline-dark" (click)="open(content)" value="Edit">Edit</button>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="row">
+			<div class="col-12 pl-5">
+				<button class="btn btn-outline-primary" (click)="clearTable()" value="Delete">Clear</button></div>
+		</div>
+	</div>
+	<ng-template #content let-modal>
+		<div class="modal-header">
+			<h4 class="modal-title" id="modal-basic-title">Add/Edit</h4>
+			<button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+            <span aria-hidden="true">&times;</span>
+          </button>
+		</div>
+		<div class="modal-body">
+			<form [formGroup]="modalForm" (submit)="onSubmit()">
+				<label for="name">Name</label>
+				<input type="text" id="name" [(ngModel)]="name"  formControlName="name" />
+				<div class="error" *ngIf="isControlInvalid('name')" style="color:red">
+					Name is required
+				</div>
+				<br/><br/>
+
+				<label for="family">Family</label>
+				<input type="text" id="family" [(ngModel)]="family" formControlName="family" />
+				<div class="error" *ngIf="isControlInvalid('family')" style="color:red">
+					Family is required
+				</div>
+				<label for="dateOfBirth">Date of birth</label>
+				<input [(ngModel)]="dateOfBirth" type="date" id="dateOfBirth" class="form-control" placeholder="yyyy-mm-dd" name="dp" ngbDatepicker #dp="ngbDatepicker" formControlName="dateOfBirth">
+				
+				<div class="error" *ngIf="isControlInvalid('name')" style="color:red">
+					Date is required
+				</div>
+				<br/><br/>
+				<div class="modal-footer">
+					<button (click)="onSubmit()" type="submit">Add/Edit</button>
+					<button type="button" class="btn btn-outline-dark" (click)="modal.close('Save click')">Close</button>
+				</div>
+			</form>
+		</div>
+	</ng-template>
